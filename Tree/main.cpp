@@ -9,38 +9,39 @@
 #pragma comment(lib, "shlwapi.lib")
 
 #ifdef DEBUG
-#define VERSION "1.3d"
+#define VERSION "1.31d"
 #endif
 #ifdef RELEASE
-#define VERSION "1.3r"
+#define VERSION "1.31r"
 #endif
 
 using namespace std;
 
 int main()
 {
-	//Startup
+	// Initializing console.
 	string Input = "";
 	string Command = "";
 	PrepareConsole("Tree", VERSION, "Please name the file which should be source of the tree.\nType \"help\" for further information.");
 
+	// Loop waits for correct input.
 	while (true)
 	{
-		//Schleife wated auf korrekte Eingabe
 		Color(INPUT_COLOR);
 		cout << "Tree.exe> ";
 		getline(cin, Input, '\n');
 		Command = ToLower(GetWord(Input, 0));
 		Color(OUTPUT_COLOR);
 
+		// Parsing.
 		if (Command == "exit" || Command == "quit")
 		{
-			//Beenden durch Eingabe von "exit" oder "quit"
+			// Leaving program when "exit" or "quit" has been typed.
 			return(0);
 		}
 		else if (Command == "help")
 		{
-			//Kurze Beschreibung und verfügbare Befehle
+			// Shows a description of all available commands.
 			cout << "   Available Commands:" << endl;
 			cout << "   help\t\tShows this page" << endl;
 			cout << "   info\t\tGeneral information" << endl;
@@ -52,29 +53,29 @@ int main()
 		}
 		else if (Command == "info")
 		{
-			//Allgemeine Info
+			// Shows general info about the software.
 			cout << "   Tree Version " << VERSION << endl;
 			cout << "   Compiled: " << __DATE__ << ", " << __TIME__ << endl;
 			cout << "   (c) 2012 - 2014 Julian Heinzel" << endl << endl;
 		}
 		else if (Command == "clear" || Command == "cls")
 		{
-			//Leeren des Konsolenfensters und erneute Ausgabe des Headers
+			// Resets the terminal.
 			PrepareConsole("Tree", VERSION, "Please name the file which should be source of the tree.\nType \"help\" for further information.");
 		}
 		else if (!PathFileExists(Input.c_str()))
 		{
-			//Fehlermeldung, falls Eingabe kein Befehl war und keinem existenten File entspricht
+			// Printing an error, if no command and no valid path has been typed.
 			cout << "   Did not find file \"" + Input + "\"." << endl << endl;
 		}
 		else
 		{
-			//Wiederhertellung der Ordner- und Dateistruktur, wenn das File existiert
+			// Restoring the directory and file structure.
 			string		Line;
 			ifstream	FileIn;
 			Progress	ProgressBar;
 
-			//Zählen der Gesamtzahl von Zeilen im File
+			// Counting the total number of lines in the specified textfile.
 			int NumberLines = 0;
 			cout << "   File found, counting lines..." << endl;
 			FileIn.open(Input);
@@ -84,7 +85,7 @@ int main()
 			}
 			ProgressBar.Reset(NumberLines, 3);
 
-			//Öffnen und überspringen der ersten drei Zeilen
+			// Opening file and skipping the first three lines.
 			cout << "   Processing " << NumberLines << " lines of text." << endl << "   ";
 			FileIn.close();
 			FileIn.open(Input);
@@ -92,7 +93,7 @@ int main()
 			getline(FileIn, Line);
 			getline(FileIn, Line);
 
-			//Wiederherstellung der Ordner- und Dateistruktur
+			// Creating directories and files.
 			string Pfad[100];
 			Pfad[0] = "C\\";
 			if (!PathFileExists("C\\"))
@@ -100,16 +101,16 @@ int main()
 				CreateDirectory("C\\", 0);
 			}
 
+			// Loops through every line in the file.
 			while (getline(FileIn, Line))
 			{
-				//Durchgehen jeder Zeile in der Datei
 				bool	Start = true;
 				int		Level = 0;
 				int		Length = strlen(Line.c_str());
 				int		Space = 0;
 				string	NewName = "";
 
-				//Update der Konsole, Abbruch bei 'q' oder 'e'
+				// Update the terminal, quit on 'q' and 'e'
 				ProgressBar.Increment();
 				ProgressBar.Print();
 				if (_kbhit())
@@ -127,7 +128,7 @@ int main()
 					break;
 				}
 
-				//Datei- bzw. Ordnername wird aus Zeile extrahiert
+				// Extract directory/file name from line.
 				for (int i = 0; i < Length; i++)
 				{
 					char Character = Line[i];
@@ -147,14 +148,14 @@ int main()
 				Start = true;
 				Level = ((Space / 4) - 1);
 
-				//Ist in der Zeile kein Datei- bzw. Ordnername enthalten, wird sie übersprungen, die nächste eingelesen und diese verarbeitet
+				// If there is no valid file or directory name, the next line is beeing evaluated.
 				if (NewName == "")
 				{
 					continue;
 				}
 
-				//Ist in der Zeile ein '+' oder '\',  so ist es ein Ordner
-				//Neuer Pfad wird abgespeichert, Ordner wird erzeugt
+				// If there is a '+' or a '\' in the given line, the name will be interpreted as a directory.
+				// The new path is saved and the directory created.
 				if ((Line.find('+') != -1) || (Line.find("\\") != -1))
 				{
 					Level += 1;
@@ -169,7 +170,7 @@ int main()
 				}
 				else
 				{
-					//Andernfalls ist es ein File, welches dann erstellt wird
+					// Otherwise a file is listed, which will then be created.
 					ofstream FileOut;
 					FileOut.open(Pfad[Level] + "\\" + NewName);
 					FileOut.close();
@@ -178,7 +179,7 @@ int main()
 
 			if (ProgressBar.GetPercent() == 100)
 			{
-				//Meldung bei abgeschlossener Schleife
+				// Info if the file has been successfully processed.
 				cout << endl << "   Generated files from \"" + Input + "\" succesfully." << endl << endl;
 			}
 		}
