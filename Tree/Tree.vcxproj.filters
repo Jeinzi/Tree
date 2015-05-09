@@ -21,7 +21,7 @@
     <ClCompile Include="..\..\_Recources\Classes\General.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\_Recources\Classes\CProgress.cpp">
+    <ClCompile Include="..\..\_Recources\Classes\Progress.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
@@ -29,8 +29,8 @@
     <ClInclude Include="..\..\_Recources\Classes\General.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\_Recources\Classes\CProgress.h">
-      <Filter>Quelldateien</Filter>
+    <ClInclude Include="..\..\_Recources\Classes\Progress.h">
+      <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

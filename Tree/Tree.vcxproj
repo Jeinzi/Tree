@@ -71,13 +71,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\_Recources\Classes\CProgress.cpp" />
     <ClCompile Include="..\..\_Recources\Classes\General.cpp" />
+    <ClCompile Include="..\..\_Recources\Classes\Progress.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\_Recources\Classes\CProgress.h" />
     <ClInclude Include="..\..\_Recources\Classes\General.h" />
+    <ClInclude Include="..\..\_Recources\Classes\Progress.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
