@@ -5,6 +5,7 @@
 #include <conio.h>
 #include <Shlwapi.h>
 #include <stdlib.h>
+#include <algorithm>
 #include "General.h"
 #include "Progress.h"
 #pragma comment(lib, "shlwapi.lib")
@@ -17,6 +18,8 @@
 #endif
 
 using namespace std;
+
+void RestoreTree(string filePath);
 
 int main()
 {
@@ -71,119 +74,118 @@ int main()
 		}
 		else
 		{
-			// Restoring the directory and file structure.
-			string		line;
-			ifstream	fileIn;
-			Progress	progressBar;
-
-			// Counting the total number of lines in the specified textfile.
-			int numberOfLines = 0;
-			cout << "   File found, counting lines..." << endl;
-			fileIn.open(input);
-			while (getline(fileIn, line))
-			{
-				numberOfLines += 1;
-			}
-			progressBar.Reset(numberOfLines, 3);
-
-			// Opening file and skipping the first three lines.
-			cout << "   Processing " << numberOfLines << " lines of text." << endl << "   ";
-			fileIn.close();
-			fileIn.open(input);
-			getline(fileIn, line);
-			getline(fileIn, line);
-			getline(fileIn, line);
-
-			// Creating directories and files.
-			string path[100];
-			path[0] = "C\\";
-			if (!PathFileExists("C\\"))
-			{
-				CreateDirectory("C\\", 0);
-			}
-
-			// Loops through every line in the file.
-			while (getline(fileIn, line))
-			{
-				bool	start = true;
-				int		level = 0;
-				int		length = strlen(line.c_str());
-				int		space = 0;
-				string	newName = "";
-
-				// Update the terminal, quit on 'q' and 'e'
-				progressBar.Increment();
-				progressBar.Print();
-				if (_kbhit())
-				{
-					char C = _getch();
-					if (C == 'q' || C == 'e')
-					{
-						cout << endl << "   Program canceled. Processed " << progressBar.GetCounter() << " of " << progressBar.GetMaxElements() << " lines. (" << progressBar.GetString() << ")" << endl << endl;
-						break;
-					}
-				}
-
-				if (length == 0)
-				{
-					break;
-				}
-
-				// Extract directory/file name from line.
-				for (int i = 0; i < length; i++)
-				{
-					char c = line[i];
-					if ((c != ' ') && (c != '-') && (c != '\\') && (c != '|') && (c != '+') && (start = true))
-					{
-						start = false;
-					}
-					if (start == true)
-					{
-						space++;
-					}
-					if (start == false)
-					{
-						newName += c;
-					}
-				}
-				start = true;
-				level = ((space / 4) - 1);
-
-				// If there is no valid file or directory name, the next line is beeing evaluated.
-				if (newName == "")
-				{
-					continue;
-				}
-
-				// If there is a '+' or a '\' in the given line, the name will be interpreted as a directory.
-				// The new path is saved and the directory created.
-				if ((line.find('+') != -1) || (line.find("\\") != -1))
-				{
-					level += 1;
-					path[level] = path[level - 1] + "\\" + newName;
-					if (PathFileExists(path[level - 1].c_str()))
-					{
-						if (!PathFileExists(path[level].c_str()))
-						{
-							CreateDirectory(path[level].c_str(), 0);
-						}
-					}
-				}
-				else
-				{
-					// Otherwise a file is listed, which will then be created.
-					ofstream fileOut;
-					fileOut.open(path[level] + "\\" + newName);
-					fileOut.close();
-				}
-			}
-
-			if (progressBar.GetPercent() == 100)
-			{
-				// Info if the file has been successfully processed.
-				cout << endl << "   Generated files from \"" + input + "\" succesfully." << endl << endl;
-			}
+			RestoreTree(input);
 		}
 	}
-	return(0);
+	return(EXIT_SUCCESS);
+}
+
+
+// Restores the directory and file structure.
+void RestoreTree(string filePath)
+{
+	string		line;
+	ifstream	fileIn;
+	Progress	progressBar;
+
+	// Counting the total number of lines in the specified textfile.
+	int numberOfLines = 0;
+	cout << "   File found, counting lines..." << endl;
+	fileIn.open(filePath);
+	while (getline(fileIn, line))
+	{
+		numberOfLines += 1;
+	}
+	progressBar.Reset(numberOfLines, 3);
+
+	// Opening file and skipping the first three lines.
+	cout << "   Processing " << numberOfLines << " lines of text." << endl << "   ";
+	fileIn.close();
+	fileIn.open(filePath);
+	for (int i = 0; i < 3; i++) getline(fileIn, line);
+
+	// Get the filename, replace '.' by '_', set the resulting string as root folder.
+	string path[100];
+	string fileName = GetFileName(filePath);
+	replace(fileName.begin(), fileName.end(), '.', '_');
+	path[0] = fileName;
+	CreateDirectory(path[0].c_str(), 0);
+
+	// Loops through every line in the file.
+	while (getline(fileIn, line))
+	{
+		bool	readingName = false;
+		int		level = 0;
+		int		length = strlen(line.c_str());
+		int		indention = 0;
+		string	newName = "";
+
+		// Update the terminal, quit on 'q' and 'e'
+		progressBar.Increment();
+		progressBar.Print();
+		if (_kbhit())
+		{
+			char C = _getch();
+			if (C == 'q' || C == 'e')
+			{
+				cout << endl << "   Program canceled. Processed "
+					<< progressBar.GetCounter() << " of " << progressBar.GetMaxElements()
+					<< " lines. (" << progressBar.GetString() << ")" << endl << endl;
+				return;
+			}
+		}
+
+		if (length == 0)
+		{
+			break;
+		}
+
+		// Extract directory/file name from line.
+		for (int i = 0; i < length; i++)
+		{
+			char c = line[i];
+			if ((c != ' ') && (c != '-') && (c != '\\') && (c != '|') && (c != '+') && (readingName == false))
+			{
+				readingName = true;
+			}
+
+			if (readingName == true)
+			{
+				newName += c;
+			}
+			else
+			{
+				indention++;
+			}
+		}
+		level = ((indention / 4) - 1);
+
+		// If there is no valid file or directory name, the next line is beeing evaluated.
+		if (newName == "")
+		{
+			continue;
+		}
+
+		// If there is a '+' or a '\' in the given line, the name will be interpreted as a directory.
+		// The new path is saved and the directory created.
+		if ((line.find('+') != -1) || (line.find("\\") != -1))
+		{
+			level += 1;
+			path[level] = path[level - 1] + "\\" + newName;
+			CreateDirectory(path[level].c_str(), 0);
+		}
+		else
+		{
+			// Otherwise a file is listed, which will then be created.
+			ofstream fileOut;
+			fileOut.open(path[level] + "\\" + newName);
+			fileOut.close();
+		}
+	}
+
+	if (progressBar.GetPercent() == 100)
+	{
+		// Info if the file has been successfully processed.
+		cout << endl << "   Generated files from \"" + filePath + "\" succesfully." << endl << endl;
+	}
 }
