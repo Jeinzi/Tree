@@ -74,10 +74,12 @@
     <ClCompile Include="..\..\_Recources\Classes\General.cpp" />
     <ClCompile Include="..\..\_Recources\Classes\Progress.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Path.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\_Recources\Classes\General.h" />
     <ClInclude Include="..\..\_Recources\Classes\Progress.h" />
+    <ClInclude Include="Path.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

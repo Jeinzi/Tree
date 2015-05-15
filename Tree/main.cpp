@@ -8,6 +8,7 @@
 #include <algorithm>
 #include "General.h"
 #include "Progress.h"
+#include "Path.h"
 #pragma comment(lib, "shlwapi.lib")
 
 #ifdef DEBUG
@@ -87,6 +88,7 @@ void RestoreTree(string filePath)
 	string		line;
 	ifstream	fileIn;
 	Progress	progressBar;
+	Path		path;
 
 	// Counting the total number of lines in the specified textfile.
 	int numberOfLines = 0;
@@ -105,11 +107,10 @@ void RestoreTree(string filePath)
 	for (int i = 0; i < 3; i++) getline(fileIn, line);
 
 	// Get the filename, replace '.' by '_', set the resulting string as root folder.
-	string path[100];
 	string fileName = GetFileName(filePath);
 	replace(fileName.begin(), fileName.end(), '.', '_');
-	path[0] = fileName;
-	CreateDirectory(path[0].c_str(), 0);
+	path.AddLevel(fileName);
+	CreateDirectory(path.GetLevel(0).c_str(), 0);
 
 	// Loops through every line in the file.
 	while (getline(fileIn, line))
@@ -158,7 +159,7 @@ void RestoreTree(string filePath)
 				indention++;
 			}
 		}
-		level = ((indention / 4) - 1);
+		level = (indention / 4);
 
 		// If there is no valid file or directory name, the next line is beeing evaluated.
 		if (newName == "")
@@ -168,17 +169,17 @@ void RestoreTree(string filePath)
 
 		// If there is a '+' or a '\' in the given line, the name will be interpreted as a directory.
 		// The new path is saved and the directory created.
+		path.RemoveLevels(level, path.Depth());
+		path.AddLevel(newName);
 		if ((line.find('+') != -1) || (line.find("\\") != -1))
 		{
-			level += 1;
-			path[level] = path[level - 1] + "\\" + newName;
-			CreateDirectory(path[level].c_str(), 0);
+			CreateDirectory(path.GetPath().c_str(), 0);
 		}
 		else
 		{
 			// Otherwise a file is listed, which will then be created.
 			ofstream fileOut;
-			fileOut.open(path[level] + "\\" + newName);
+			fileOut.open(path.GetPath());
 			fileOut.close();
 		}
 	}

@@ -24,12 +24,18 @@
     <ClCompile Include="..\..\_Recources\Classes\Progress.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="Path.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\_Recources\Classes\General.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="..\..\_Recources\Classes\Progress.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Path.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
