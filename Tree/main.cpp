@@ -7,15 +7,15 @@
 #include <stdlib.h>
 #include <algorithm>
 #include "General.h"
-#include "Progress.h"
+#include "../Progresscounter/Progress.h"
 #include "Path.h"
 #pragma comment(lib, "shlwapi.lib")
 
 #ifdef DEBUG
-	#define VERSION "1.32d"
+	#define VERSION "1.33d"
 #endif
 #ifdef RELEASE
-	#define VERSION "1.32r"
+	#define VERSION "1.33r"
 #endif
 
 using namespace std;
