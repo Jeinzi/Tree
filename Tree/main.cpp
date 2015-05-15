@@ -11,15 +11,9 @@
 #include "Path.h"
 #pragma comment(lib, "shlwapi.lib")
 
-#ifdef DEBUG
-	#define VERSION "1.33d"
-#endif
-#ifdef RELEASE
-	#define VERSION "1.33r"
-#endif
-
 using namespace std;
 
+const string version = "1.33";
 void RestoreTree(string filePath);
 
 int main()
@@ -27,7 +21,7 @@ int main()
 	// Initializing console.
 	string input = "";
 	string command = "";
-	PrepareConsole("Tree", VERSION, "Please name the file which should be source of the tree.\nType \"help\" for further information.");
+	PrepareConsole("Tree", version, "Please name the file which should be source of the tree.\nType \"help\" for further information.");
 
 	// Loop waits for correct input.
 	while (true)
@@ -59,14 +53,14 @@ int main()
 		else if (command == "info")
 		{
 			// Shows general info about the software.
-			cout << "   Tree Version " << VERSION << endl;
+			cout << "   Tree Version " << version << endl;
 			cout << "   Compiled: " << __DATE__ << ", " << __TIME__ << endl;
 			cout << "   (c) 2012 - 2015 Julian Heinzel" << endl << endl;
 		}
 		else if (command == "clear" || command == "cls")
 		{
 			// Resets the terminal.
-			PrepareConsole("Tree", VERSION, "Please name the file which should be source of the tree.\nType \"help\" for further information.");
+			PrepareConsole("Tree", version, "Please name the file which should be source of the tree.\nType \"help\" for further information.");
 		}
 		else if (!PathFileExists(input.c_str()))
 		{
