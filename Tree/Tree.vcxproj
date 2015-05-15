@@ -42,7 +42,7 @@
     <IncludePath>C:\Users\Julian\Programme\C++\_Recources\Classes;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>C:\Users\Julian\Programme\C++\_Recources\Classes;$(IncludePath)</IncludePath>
+    <IncludePath>$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -71,14 +71,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\_Recources\Classes\General.cpp" />
     <ClCompile Include="..\Progresscounter\Progress.cpp" />
+    <ClCompile Include="..\Utility\Utility.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Path.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\_Recources\Classes\General.h" />
     <ClInclude Include="..\Progresscounter\Progress.h" />
+    <ClInclude Include="..\Utility\Utility.h" />
     <ClInclude Include="Path.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

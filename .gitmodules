@@ -1,3 +1,6 @@
 [submodule "Progresscounter"]
 	path = Progresscounter
 	url = https://github.com/Jeinzi/Progresscounter.git
+[submodule "Utility"]
+	path = Utility
+	url = https://github.com/Jeinzi/Utility.git

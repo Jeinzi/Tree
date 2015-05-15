@@ -18,24 +18,24 @@
     <ClCompile Include="main.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\_Recources\Classes\General.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="Path.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="..\Progresscounter\Progress.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="..\Utility\Utility.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\_Recources\Classes\General.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="Path.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="..\Progresscounter\Progress.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utility\Utility.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

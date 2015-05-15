@@ -6,7 +6,7 @@
 #include <Shlwapi.h>
 #include <stdlib.h>
 #include <algorithm>
-#include "General.h"
+#include "../Utility/Utility.h"
 #include "../Progresscounter/Progress.h"
 #include "Path.h"
 #pragma comment(lib, "shlwapi.lib")
@@ -79,10 +79,10 @@ int main()
 // Restores the directory and file structure.
 void RestoreTree(string filePath)
 {
-	string		line;
-	ifstream	fileIn;
-	Progress	progressBar;
-	Path		path;
+	string			line;
+	ifstream		fileIn;
+	Progresscounter	progressBar;
+	Path			path;
 
 	// Counting the total number of lines in the specified textfile.
 	int numberOfLines = 0;
