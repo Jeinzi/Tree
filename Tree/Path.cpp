@@ -3,7 +3,13 @@
 // Initialize all stuff. Parameter path defaults to "".
 Path::Path(std::string path)
 {
+	// Choose the OS dependant path separator.
+#ifdef _WIN32
 	delimiter = "\\";
+#else
+	delimiter = "/";
+#endif
+
 	if (!path.empty())
 	{
 		Path::Parse(path);
