@@ -8,6 +8,7 @@
 #include "Path.h"
 
 #ifdef _WIN32
+	// Used for _kbhit() and _getch().
 	#include <conio.h>
 #else
 #endif
