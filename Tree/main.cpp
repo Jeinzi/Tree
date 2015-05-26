@@ -1,19 +1,20 @@
 #include <iostream>
-#include <windows.h>
 #include <string>
 #include <fstream>
-#include <conio.h>
-#include <Shlwapi.h>
-#include <stdlib.h>
+#include <cstdlib>
 #include <algorithm>
 #include "../Utility/Utility.h"
-#include "../Progresscounter/Progress.h"
+#include "../Progresscounter/Progresscounter.h"
 #include "Path.h"
-#pragma comment(lib, "shlwapi.lib")
+
+#ifdef _WIN32
+	#include <conio.h>
+#else
+#endif
 
 using namespace std;
 
-const string version = "1.33";
+const string version = "1.35";
 void RestoreTree(string filePath);
 
 int main()
@@ -21,17 +22,17 @@ int main()
 	// Initializing console.
 	string input = "";
 	string command = "";
-	PrepareConsole("Tree", version, "Please name the file which should be source of the tree.\nType \"help\" for further information.");
+	PrepareTerminal("Tree", version, "Please name the file which should be source of the tree.\nType \"help\" for further information.");
 
 	// Loop waits for correct input.
 	while (true)
 	{
-		Color(INPUT_COLOR);
+		ChangeColor(Color::Input);
 		cout << "Tree.exe> ";
 		getline(cin, input, '\n');
-		command = ToLower(GetWord(input, 1));
-		Color(OUTPUT_COLOR);
-
+		command = ToLower(GetWord(input, 0));
+		ChangeColor(Color::Output);
+		
 		// Parsing.
 		if (command == "exit" || command == "quit")
 		{
@@ -60,9 +61,9 @@ int main()
 		else if (command == "clear" || command == "cls")
 		{
 			// Resets the terminal.
-			PrepareConsole("Tree", version, "Please name the file which should be source of the tree.\nType \"help\" for further information.");
+			PrepareTerminal("Tree", version, "Please name the file which should be source of the tree.\nType \"help\" for further information.");
 		}
-		else if (!PathFileExists(input.c_str()))
+		else if (!PathExists(input))
 		{
 			// Printing an error, if no command and no valid path has been typed.
 			cout << "   Did not find file \"" + input + "\"." << endl << endl;
@@ -104,20 +105,23 @@ void RestoreTree(string filePath)
 	string fileName = GetFileName(filePath);
 	replace(fileName.begin(), fileName.end(), '.', '_');
 	path.AddLevel(fileName);
-	CreateDirectory(path.GetLevel(0).c_str(), 0);
+	CreateDirectory(path.GetLevel(0));
 
 	// Loops through every line in the file.
 	while (getline(fileIn, line))
 	{
 		bool	readingName = false;
 		int		level = 0;
-		int		length = strlen(line.c_str());
 		int		indention = 0;
 		string	newName = "";
 
 		// Update the terminal, quit on 'q' and 'e'
 		progressBar.Increment();
 		progressBar.Print();
+
+
+#ifdef _WIN32
+		// Aborting the program is supported only under windows.
 		if (_kbhit())
 		{
 			char C = _getch();
@@ -129,14 +133,15 @@ void RestoreTree(string filePath)
 				return;
 			}
 		}
+#endif
 
-		if (length == 0)
+		if (line.length() == 0)
 		{
 			break;
 		}
 
 		// Extract directory/file name from line.
-		for (int i = 0; i < length; i++)
+		for (unsigned int i = 0; i < line.length(); i++)
 		{
 			char c = line[i];
 			if ((c != ' ') && (c != '-') && (c != '\\') && (c != '|') && (c != '+') && (readingName == false))
@@ -167,7 +172,7 @@ void RestoreTree(string filePath)
 		path.AddLevel(newName);
 		if ((line.find('+') != -1) || (line.find("\\") != -1))
 		{
-			CreateDirectory(path.GetPath().c_str(), 0);
+			CreateDirectory(path.GetPath());
 		}
 		else
 		{

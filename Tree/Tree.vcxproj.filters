@@ -21,10 +21,10 @@
     <ClCompile Include="Path.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="..\Progresscounter\Progress.cpp">
+    <ClCompile Include="..\Utility\Utility.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="..\Utility\Utility.cpp">
+    <ClCompile Include="..\Progresscounter\Progresscounter.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
@@ -32,10 +32,10 @@
     <ClInclude Include="Path.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="..\Progresscounter\Progress.h">
+    <ClInclude Include="..\Utility\Utility.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="..\Utility\Utility.h">
+    <ClInclude Include="..\Progresscounter\Progresscounter.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
