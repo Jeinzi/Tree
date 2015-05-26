@@ -32,12 +32,12 @@ int main()
 		getline(cin, input, '\n');
 		command = ToLower(GetWord(input, 0));
 		ChangeColor(Color::Output);
-		
+
 		// Parsing.
 		if (command == "exit" || command == "quit")
 		{
 			// Leaving program when "exit" or "quit" has been typed.
-			return(EXIT_SUCCESS);
+			break;
 		}
 		else if (command == "help")
 		{
@@ -73,6 +73,8 @@ int main()
 			RestoreTree(input);
 		}
 	}
+
+	ChangeColor(Color::White);
 	return(EXIT_SUCCESS);
 }
 
