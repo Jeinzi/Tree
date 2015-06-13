@@ -105,9 +105,14 @@ void RestoreTree(string filePath)
 	for (int i = 0; i < 3; i++) getline(fileIn, line);
 
 	// Get the filename, replace '.' by '_', set the resulting string as root folder.
-	string fileName = GetFileName(filePath);
-	replace(fileName.begin(), fileName.end(), '.', '_');
-	path.AddLevel(fileName);
+	string rootFolder = GetFileName(filePath);
+	replace(rootFolder.begin(), rootFolder.end(), '.', '_');
+	// Check if there is an equally named file and adapt the root folder name.
+	if(IsFile(rootFolder))
+	{
+		rootFolder += "_Dir";
+	}
+	path.AddLevel(rootFolder);
 	CreateDirectory(path.GetLevel(0));
 
 	// Loops through every line in the file.
