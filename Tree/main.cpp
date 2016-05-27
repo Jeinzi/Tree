@@ -163,7 +163,7 @@ void RestoreTree(string filePath)
 		if (_kbhit())
 			c = _getch();
 #else
-		chr = getchar();
+		c = getchar();
 #endif
 		// Quit application on "q" or "e".
 		if (c == 'q' || c == 'e')
